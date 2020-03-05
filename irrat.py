@@ -2,6 +2,8 @@ from sympy import Add, Integral, Poly, Pow, pprint, sqrt, Symbol
 from sympy.abc import x
 from sympy.core.numbers import Half
 
+import sympy as sp
+
 
 def euler(self: Integral) -> Add:
     """Implements Euler substitution for irrational integrals"""
@@ -22,17 +24,21 @@ def euler(self: Integral) -> Add:
     _sqrt = _sqrt[0]
     _coeffs = Poly(_sqrt**2).all_coeffs()  # Коэфиценты многочлена под корнем
     assert(len(_coeffs) == 3)
-    _t = Symbol('t')
+    _t = Symbol('t')   
 
     if _coeffs[0] > 0:  # a > 0
-        ...
+        _x = (_coeffs[2]-_t**2)/(2*sqrt(_coeffs[0])*_t-_coeffs[1])
+        _tx = _sqrt - sqrt(_coeffs[0])*x
+        _dx =  sp.simplify(sp.diff(_x,_t))
+        _sqrtt = sqrt(_coeffs[0])*_x+_t
+        return Integral(self.args[0].subs([(_sqrt, _sqrtt), (x,_x)])*_dx,(_t, self.args[1][1:])).doit().subs(_t, _tx)
     elif _coeffs[2] > 0:  # c > 0
         ...
     else:  # third case
         ...
-    # return Integral(self.args[0].subs(x, _t),
-    #                 (_t, self.args[1][1:]))  # .doit().subs(_t, x)
-    return _sqrt  # TODO: Реализация подстановок
+    #return Integral(self.args[0].subs([(_sqrt, _sqrtt), (x,_x)])*_dx,
+                   #  (_t, self.args[1][1:])).doit().subs(_t, _tx)
+    return _sqrt  #TODO: Реализация подстановок
 
 
 def diff_binomial(self: Integral) -> Add:
@@ -41,7 +47,7 @@ def diff_binomial(self: Integral) -> Add:
 
 Integral.euler = euler
 
-a = Integral(1/(x + sqrt(x**2 + x + 1)), x)
+a = Integral(x*sqrt(x**2-2*x+2), x)
 pprint(a)
 print()
-pprint(a.euler())
+pprint(sp.simplify((a.euler())), use_unicode=False)
