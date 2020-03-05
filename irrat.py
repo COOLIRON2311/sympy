@@ -40,10 +40,6 @@ def euler(*args, **kwargs) -> Add:
         sqrtt = None
         ...
     else:  # third case
-        '''
-        discriminant = coeffs[1]**2 - 4 * coeffs[0] * coeffs[1]  # Дискриминант
-        if discriminant >= 0:  # TODO: Или через solve
-        '''
         sols = solve(_sqrt**2)
         if sols:
             _x = None
