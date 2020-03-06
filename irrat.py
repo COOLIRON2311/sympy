@@ -34,19 +34,17 @@ def euler(*args, **kwargs) -> Add:
         dx = simplify(diff(_x, t))  # dx через t
         sqrtt = sqrt(coeffs[0]) * _x + t  # корень через t
     elif coeffs[2] > 0:  # c > 0
-        _x = None
-        tx = None
-        dx = None
-        sqrtt = None
-        ...
-    else:  # third case
+        _x = (coeffs[1]-2*sqrt(coeffs[2])*t)/(t**2-coeffs[0])
+        tx = (_sqrt-sqrt(coeffs[2]))/x
+        dx = simplify(diff(_x,t))
+        sqrtt = _x*t + sqrt(coeffs[2])
+    else:  # third case   
         sols = solve(_sqrt**2)
         if sols:
-            _x = None
-            tx = None
-            dx = None
-            sqrtt = None
-            ...
+            _x = (t**2*sols[0]-coeffs[0]*sols[1])/(t**2-coeffs[0])
+            tx = _sqrt/(x- sols[0])
+            dx = simplify(diff(_x,t))
+            sqrtt = t*(_x-sols[0])
         else:
             raise Warning("Euler substitution is impossible. "
                           "Try different integration methods.")
@@ -66,7 +64,7 @@ def diff_binomial(*args, **kwargs) -> Add:
 
 Integral.euler = euler
 
-a = Integral(x*sqrt(x**2 - 2*x + 2), x)
+a = Integral(1/(1+sqrt(-1+50*x-x**2)), x)
 # pprint(a, use_unicode=False)
 print()
 pprint(a.euler(), use_unicode=False)
