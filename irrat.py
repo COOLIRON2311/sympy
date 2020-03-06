@@ -49,13 +49,14 @@ def euler(*args, **kwargs) -> Add:
         else:
             raise Warning("Euler substitution is impossible. "
                           "Try different integration methods.")
-    return Integral(simplify(integral.args[0].subs({_sqrt: sqrtt, x: _x}) *
-                    dx), (_t, integral.args[1][1:])).doit().subs(_t, tx)
+    return Integral(simplify(integral.args[0].subs({_sqrt: sqrtt, x: _x})*dx),
+                    (_t, integral.args[1][1:]), **kwargs).doit().subs(_t, tx)
 
 
 def tan_ha(*args, **kwargs) -> Add:
     """Integrate function using Tangent half-angle substitution"""
-    x = args[1][0]
+    integral = Integral(*args, **kwargs)
+    x = integral.args[1][0]
     _t = Symbol('t')
     _sin = (2 * _t)/(1 + _t**2)
     _cos = (1 - _t**2)/(1 + _t**2)
@@ -64,7 +65,7 @@ def tan_ha(*args, **kwargs) -> Add:
     _dx = 2/(1 + _t**2)
     _f = simplify(args[0].subs({sin(x): _sin, cos(x): _cos, tan(x): _tg,
                                 cot(x): _ctg}) * _dx)
-    return simplify(Integral(_f, (_t, *args[1][1:]),
+    return simplify(Integral(_f, (_t, integral.args[1][1:]),
                              **kwargs).doit().subs(_t, tan(x/2)))
 
 
@@ -76,9 +77,10 @@ def diff_binomial(*args, **kwargs) -> Add:
 Integral.euler = euler
 
 # a = Integral(1/(2*sin(x) - cos(x) + 5), x)
-a = Integral((sin(x)**2/(1 + sin(x)**2)), x)
+# a = Integral((sin(x)**2/(1 + sin(x)**2)), x)
 # a = Integral(1/(1 + sqrt(-1 + 50*x - x**2)), x)
-pprint(a, use_unicode=False)
+a = Integral(1/(x + sqrt(x**2 + x + 1)), x)
+# pprint(a, use_unicode=False)
 print()
-pprint(simplify(tan_ha(*a.args)))
-# pprint(a.euler(), use_unicode=False)
+# pprint(tan_ha(*a.args))
+pprint(a.euler(), use_unicode=False)
