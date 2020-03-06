@@ -13,15 +13,14 @@ def euler(*args, **kwargs) -> Add:
         for f in functions_tuple:
             if type(f) is Pow and type(f.args[0]) is Add \
                     and type(f.args[1]) is Half:
-                if f not in _sqrt:
-                    _sqrt.append(f)
+                _sqrt.append(f)
                 exit
             else:
                 __sqrt_parse(f.args)
 
     __sqrt_parse(integral.args)
-    if len(_sqrt) != 1:  # Корень не найден или их несколько
-        raise Warning("None or more than one square roots found in expression")
+    if not _sqrt:  # Корень не найден
+        raise Warning("Square root not found in expression")
     _sqrt = _sqrt[0]                                              # 0  1  2
     coeffs = Poly(_sqrt**2).all_coeffs()  # Коэфиценты многочлена: [a, b, c]
     assert(len(coeffs) == 3)
@@ -39,10 +38,10 @@ def euler(*args, **kwargs) -> Add:
         tx = (_sqrt-sqrt(coeffs[2]))/x
         dx = simplify(diff(_x,t))
         sqrtt = _x*t + sqrt(coeffs[2])
-    else:  # third case   
+    else:  # third case   # sqrt(a*(x-x1)*(x-x2))
         sols = solve(_sqrt**2)
-        if sols:
-            _x = (t**2*sols[0]-coeffs[0]*sols[1])/(t**2-coeffs[0])
+        if len(sols)==2:
+            _x = (t**2*sols[0]-coeffs[0]*sols[1])/(t**2-coeffs[0]) 
             tx = _sqrt/(x- sols[0])
             dx = simplify(diff(_x,t))
             sqrtt = t*(_x-sols[0])
