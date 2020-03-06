@@ -35,8 +35,9 @@ def euler(*args, **kwargs) -> Add:
         dx = simplify(diff(_x, _t))  # dx через t
         sqrtt = sqrt(coeffs[0]) * _x + _t  # корень через t
     elif coeffs[2] > 0:  # c > 0
-        _x = (coeffs[1]-2*sqrt(coeffs[2])*_t)/(_t**2 - coeffs[0])  # x через t
-        tx = (_sqrt-sqrt(coeffs[2]))/x   # t через x
+        _x = (coeffs[1] - 2*sqrt(coeffs[2])*_t) / \
+             (_t**2 - coeffs[0])  # x через t
+        tx = (_sqrt - sqrt(coeffs[2]))/x   # t через x
         dx = simplify(diff(_x, _t))  # dx через t
         sqrtt = _x*_t + sqrt(coeffs[2])  # корень через t
     else:  # third case   # sqrt(a*(x-x1)*(x-x2))
