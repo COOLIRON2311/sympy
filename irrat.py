@@ -6,7 +6,9 @@ from sympy.core.numbers import Half
 
 def euler(f, d) -> Add:
     """Integrate irrational function using Euler substitution"""
-    if type(d) not in (Tuple, tuple):
+    try:
+        iter(d)
+    except TypeError:
         d = (d,)
     _sqrt = []  # Искомый корень для замены
 
@@ -57,7 +59,9 @@ def euler(f, d) -> Add:
 
 def tan_ha(f, d) -> Add:
     """Integrate function using Tangent half-angle substitution"""
-    if type(d) not in (Tuple, tuple):
+    try:
+        iter(d)
+    except TypeError:
         d = (d,)
     _t = Symbol('t')
     _sin = (2 * _t)/(1 + _t**2)
@@ -72,7 +76,9 @@ def tan_ha(f, d) -> Add:
 
 def diff_binomial(f, d) -> Add:
     """Integrate function as Differential binomial"""
-    if type(d) not in (Tuple, tuple):
+    try:
+        iter(d)
+    except TypeError:
         d = (d,)
     ...  # TODO: Реализация
 
@@ -82,6 +88,6 @@ def diff_binomial(f, d) -> Add:
 # a = Integral(1/(1 + sqrt(-1 + 50*x - x**2)), x)
 a = Integral(1/(x + sqrt(x**2 + x + 1)), x)
 # pprint(a, use_unicode=False)
-print()
+# print()
 # pprint(tan_ha(*a.args))
 pprint(euler(*a.args), use_unicode=False)
