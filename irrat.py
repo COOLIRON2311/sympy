@@ -12,16 +12,17 @@ def euler(f, d) -> Add:
         d = (d,)
     _sqrt = []  # Искомый корень для замены
 
-    def __sqrt_parse(functions_tuple: tuple) -> None:
+    def __sqrt_collect(functions_tuple: tuple) -> None:
+        """Collects expressions of the following form: sqrt(ax**2 + bx + c)"""
         for f in functions_tuple:
             if isinstance(f, Pow) and isinstance(f.args[0], Add) \
                     and isinstance(f.args[1], Half):
                 if f not in _sqrt:
                     _sqrt.append(f)
             else:
-                __sqrt_parse(f.args)
+                __sqrt_collect(f.args)
 
-    __sqrt_parse(f.args)
+    __sqrt_collect(f.args)
     # Корень не найден или их несколько
     assert len(_sqrt) == 1, f'One square root expected, found {len(_sqrt)}'
     _sqrt = _sqrt[0]                                              # 0  1  2
