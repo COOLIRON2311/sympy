@@ -1,5 +1,5 @@
 from sympy import Add, Integral, Poly, Pow, pprint, sqrt, Symbol, simplify, \
-     diff, solve, sin, cos, tan, cot, Tuple
+     diff, solve, sin, cos, tan, cot
 from sympy.abc import x
 from sympy.core.numbers import Half
 
@@ -14,11 +14,10 @@ def euler(f, d) -> Add:
 
     def __sqrt_parse(functions_tuple: tuple) -> None:
         for f in functions_tuple:
-            if type(f) is Pow and type(f.args[0]) is Add \
-                    and type(f.args[1]) is Half:
+            if isinstance(f, Pow) and isinstance(f.args[0], Add) \
+                    and isinstance(f.args[1], Half):
                 if f not in _sqrt:
                     _sqrt.append(f)
-                exit
             else:
                 __sqrt_parse(f.args)
 
